@@ -34,10 +34,14 @@
 }
 
 .App {
-  display: inline-flex;
+  display: grid;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .gifImg {
+  display: flex;
   width: 50vh;
   height: 50vh;
 }
@@ -48,6 +52,7 @@
 }
 
 .downvoteArea {
+  display: flex;
   background-color: red;
   width: 10vh;
   height: 50vh;
@@ -56,6 +61,7 @@
 }
 
 .upvoteArea {
+  display: flex;
   background-color: green;
   width: 10vh;
   height: 50vh;
@@ -104,11 +110,39 @@
 }
 
 .informationCard {
-  margin: auto;
-  width: 50%;
+  margin: 5%;
+  width: 80%;
 }
 
 .informationText {
-  margin: auto;
+  margin: 10px;
   display: block;
+}
+
+.detailsButtonDiv {
+  display: inline-flex;
+  justify-content: center;
+  margin-top: 20%;
+  width: 100%;
+}
+
+.detailsCard {
+  margin: 5%;
+  width: 80%;
+  display: block;
+}
+
+.gifRatingArea {
+  display: inline-flex;
+  margin: auto;
+}
+
+.newGifArea {
+  display: grid;
+  padding-top: 3%;
+  margin: auto;
+}
+
+.textBox {
+  display: inline;
 }

@@ -27,11 +27,19 @@ const useApp = () => {
         downvoteRatio: 0.0
     });
     const [gifInformation, setGifInformation] = useState({
-        title: "testTitle",
-        author: "testAuthor",
-        descripton: "testDescripton",
-        topic: "testTopic",
+        title: "",
+        author: "",
+        descripton: "",
+        topic: "",
     })
+    const [gifDetails, setGifDetails] = useState({
+        fileSize: 0,
+        imageWidth: 0,
+        imageHeight: 0,
+        frameCount: 0,
+        duration: 0,
+    })
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         fetch("http://localhost:8080/gifs")
@@ -41,20 +49,20 @@ const useApp = () => {
 
                 setGif(localGifs[currentGifIndex])
 
-                fetch("http://localhost:8080/gifs/" + gif.id + "/information")
+                fetch("http://localhost:8080/gifs/" + localGifs[currentGifIndex].id + "/information")
                     .then(res => res.json())
                     .then(result => setGifInformation(result))
             })
     }, [])
 
     const upvoteGif = () => {
+        console.log("upvote")
         fetch("http://localhost:8080/gifs/" + localGifs[currentGifIndex].id + "/upvote", { method: "POST" })
             .then(res => res.json())
             .then(result => {
                 localGifs[currentGifIndex] = result
-
-                updateGifs();
                 startShowingVotes();
+                setGif(localGifs[currentGifIndex]);
             })
     }
 
@@ -63,15 +71,9 @@ const useApp = () => {
             .then(res => res.json())
             .then(result => {
                 localGifs[currentGifIndex] = result
-
-                updateGifs();
                 startShowingVotes();
+                setGif(localGifs[currentGifIndex]);
             })
-    }
-
-    const updateGifs = () => {
-        currentGifIndex = (currentGifIndex + 1) % localGifs.length;
-        setGif(localGifs[currentGifIndex]);
     }
 
     const startShowingVotes = () => {
@@ -80,16 +82,11 @@ const useApp = () => {
                 seconds = seconds - 1;
             }
             if (seconds <= 0) {
-                setShowVotes(false)
-                clearInterval(myInterval)
-                fetch("http://localhost:8080/gifs/" + gif.id + "/information")
-                    .then(res => res.json())
-                    .then(result => setGifInformation(result))
+                nextGif()
             }
         }, 1000)
 
-
-        seconds = 3
+        seconds = 1005
         setShowVotes(true)
         setInterval(myInterval)
 
@@ -100,8 +97,8 @@ const useApp = () => {
                 },
                 method: "POST",
                 body: JSON.stringify({
-                    upvotes: gif.upvotes,
-                    downvotes: gif.downvotes,
+                    upvotes: localGifs[currentGifIndex].upvotes,
+                    downvotes: localGifs[currentGifIndex].downvotes,
                 }),
             }
         )
@@ -109,6 +106,73 @@ const useApp = () => {
             .then(result => setRatio(result))
     }
 
+    const requestDetails = () => {
+        setLoading(true)
+        fetch("http://localhost:8080/gifs/" + localGifs[currentGifIndex].id + "/details")
+            .then(res => res.json())
+            .then(result => {
+                setLoading(false)
+                setGifDetails(result)
+            })
+    }
+
+    const postNewGif = () => {
+        fetch("http://localhost:8080/gifs",
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                method: "POST",
+                body: JSON.stringify({
+                    url: document.getElementById("urlText").value,
+                    title: document.getElementById("titleText").value,
+                    author: document.getElementById("authorText").value,
+                    description: document.getElementById("descriptionText").value,
+                    topic: document.getElementById("topicText").value,
+                }),
+            }
+        )
+            .then(res => res.json())
+            .then(result => {
+                if (result.id !== undefined) {
+                    fetch("http://localhost:8080/gifs")
+                        .then(res => res.json())
+                        .then(result => {
+                            localGifs = shuffle(result)
+
+                            setGif(localGifs[currentGifIndex])
+                            nextGif()
+
+                            document.getElementById("urlText").value = ""
+                            document.getElementById("titleText").value = ""
+                            document.getElementById("authorText").value = ""
+                            document.getElementById("descriptionText").value = ""
+                            document.getElementById("topicText").value = ""
+
+                            fetch("http://localhost:8080/gifs/" + localGifs[currentGifIndex].id + "/information")
+                                .then(res => res.json())
+                                .then(result => setGifInformation(result))
+                        })
+                }
+            })
+    }
+
+    const nextGif = () => {
+        console.log("nextGif")
+        clearInterval(myInterval)
+        updateGifs();
+    }
+
+    const updateGifs = () => {
+        currentGifIndex = (currentGifIndex + 1) % localGifs.length;
+        setGif(localGifs[currentGifIndex]);
+        setGifDetails(null)
+        setShowVotes(false)
+
+        fetch("http://localhost:8080/gifs/" + localGifs[currentGifIndex].id + "/information")
+            .then(res => res.json())
+            .then(result => setGifInformation(result))
+    }
 
     return {
         gif,
@@ -117,6 +181,11 @@ const useApp = () => {
         showVotes,
         ratio,
         gifInformation,
+        gifDetails,
+        requestDetails,
+        nextGif,
+        loading,
+        postNewGif,
     }
 };
 
