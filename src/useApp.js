@@ -26,14 +26,24 @@ const useApp = () => {
         upvoteRatio: 0.0,
         downvoteRatio: 0.0
     });
+    const [gifInformation, setGifInformation] = useState({
+        title: "testTitle",
+        author: "testAuthor",
+        descripton: "testDescripton",
+        topic: "testTopic",
+    })
 
     useEffect(() => {
-        fetch("http://localhost:8080/gifs/all")
+        fetch("http://localhost:8080/gifs")
             .then(res => res.json())
             .then(result => {
                 localGifs = shuffle(result)
 
                 setGif(localGifs[currentGifIndex])
+
+                fetch("http://localhost:8080/gifs/" + gif.id + "/information")
+                    .then(res => res.json())
+                    .then(result => setGifInformation(result))
             })
     }, [])
 
@@ -72,6 +82,9 @@ const useApp = () => {
             if (seconds <= 0) {
                 setShowVotes(false)
                 clearInterval(myInterval)
+                fetch("http://localhost:8080/gifs/" + gif.id + "/information")
+                    .then(res => res.json())
+                    .then(result => setGifInformation(result))
             }
         }, 1000)
 
@@ -93,9 +106,7 @@ const useApp = () => {
             }
         )
             .then(res => res.json())
-            .then(result => {
-                setRatio(result)
-            })
+            .then(result => setRatio(result))
     }
 
 
@@ -104,7 +115,8 @@ const useApp = () => {
         upvoteGif,
         downvoteGif,
         showVotes,
-        ratio
+        ratio,
+        gifInformation,
     }
 };
 

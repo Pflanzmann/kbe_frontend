@@ -93,7 +93,6 @@
   width: 80%;
 }
 
-
 .upvoteRatio {
   margin: auto;
   color: green
@@ -102,4 +101,14 @@
 .downvoteRatio {
   margin: auto;
   color: red
+}
+
+.informationCard {
+  margin: auto;
+  width: 50%;
+}
+
+.informationText {
+  margin: auto;
+  display: block;
 }

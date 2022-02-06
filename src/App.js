@@ -1,4 +1,4 @@
-import { LinearProgress } from '@material-ui/core';
+import { Card, LinearProgress } from '@material-ui/core';
 import { withStyles } from '@material-ui/styles';
 import './App.css';
 import useApp from "./useApp.js";
@@ -10,6 +10,7 @@ function App() {
     downvoteGif,
     showVotes,
     ratio,
+    gifInformation,
   } = useApp()
 
   const StyledLinearProgress = withStyles({
@@ -36,6 +37,12 @@ function App() {
           <b className='upvoteRatio'>{ratio.upvoteRate}</b>
         </div>
         <StyledLinearProgress className='ratioBar' variant='determinate' value={ratio.downvoteRate * 100} />
+        <Card className='informationCard' variant="outlined">
+          <b className='informationText'>Title: {gifInformation.title}</b>
+          <b className='informationText'>Author: {gifInformation.author}</b>
+          <b className='informationText'>Description: {gifInformation.description}</b>
+          <b className='informationText'>Topic: {gifInformation.topic}</b>
+        </Card>
       </div>
   }
 
