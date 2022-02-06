@@ -86,7 +86,7 @@ const useApp = () => {
             }
         }, 1000)
 
-        seconds = 1005
+        seconds = 30;
         setShowVotes(true)
         setInterval(myInterval)
 
