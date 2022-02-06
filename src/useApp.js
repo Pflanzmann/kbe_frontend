@@ -16,14 +16,21 @@ function shuffle(array) {
     return array;
 }
 
+var myInterval;
+var seconds = 3;
+
 const useApp = () => {
     const [gif, setGif] = useState([]);
+    const [showVotes, setShowVotes] = useState(false);
+    const [ratio, setRatio] = useState({
+        upvoteRatio: 0.0,
+        downvoteRatio: 0.0
+    });
 
     useEffect(() => {
         fetch("http://localhost:8080/gifs/all")
             .then(res => res.json())
             .then(result => {
-                console.log(result)
                 localGifs = shuffle(result)
 
                 setGif(localGifs[currentGifIndex])
@@ -37,6 +44,7 @@ const useApp = () => {
                 localGifs[currentGifIndex] = result
 
                 updateGifs();
+                startShowingVotes();
             })
     }
 
@@ -47,6 +55,7 @@ const useApp = () => {
                 localGifs[currentGifIndex] = result
 
                 updateGifs();
+                startShowingVotes();
             })
     }
 
@@ -55,10 +64,47 @@ const useApp = () => {
         setGif(localGifs[currentGifIndex]);
     }
 
+    const startShowingVotes = () => {
+        myInterval = setInterval(() => {
+            if (seconds > 0) {
+                seconds = seconds - 1;
+            }
+            if (seconds <= 0) {
+                setShowVotes(false)
+                clearInterval(myInterval)
+            }
+        }, 1000)
+
+
+        seconds = 3
+        setShowVotes(true)
+        setInterval(myInterval)
+
+        fetch("http://localhost:8080/calculator/calculate",
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                method: "POST",
+                body: JSON.stringify({
+                    upvotes: gif.upvotes,
+                    downvotes: gif.downvotes,
+                }),
+            }
+        )
+            .then(res => res.json())
+            .then(result => {
+                setRatio(result)
+            })
+    }
+
+
     return {
         gif,
         upvoteGif,
         downvoteGif,
+        showVotes,
+        ratio
     }
 };
 

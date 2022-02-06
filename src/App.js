@@ -1,3 +1,5 @@
+import { LinearProgress } from '@material-ui/core';
+import { withStyles } from '@material-ui/styles';
 import './App.css';
 import useApp from "./useApp.js";
 
@@ -5,25 +7,49 @@ function App() {
   const {
     gif,
     upvoteGif,
-    downvoteGif
+    downvoteGif,
+    showVotes,
+    ratio,
   } = useApp()
+
+  const StyledLinearProgress = withStyles({
+    colorPrimary: {
+      backgroundColor: "Green",
+    },
+    barColorPrimary: {
+      backgroundColor: "red"
+    }
+  })(LinearProgress);
+
+  var shownArea;
+  if (!showVotes) {
+    shownArea = <img className='gifImg' src={gif.url} id="picture" alt="Ups something went wrong!" />
+  } else {
+    shownArea =
+      <div className='infoBox'>
+        <div className='voteBox'>
+          <b className='downvoteCount'>{gif.downvotes}</b>
+          <b className='upvoteCount'>{gif.upvotes}</b>
+        </div>
+        <div className='ratioBox'>
+          <b className='downvoteRatio'>{ratio.downvoteRate}</b>
+          <b className='upvoteRatio'>{ratio.upvoteRate}</b>
+        </div>
+        <StyledLinearProgress className='ratioBar' variant='determinate' value={ratio.downvoteRate * 100} />
+      </div>
+  }
 
   return (
     <div className="App">
-      <img src={gif.url} id="picture" alt="Ups something went wrong!" onClick={(e) => {
-        var bounds = document.getElementById("picture").getBoundingClientRect();
-        var width = bounds.right - bounds.left;
-        var moveMouseX = e.clientX - bounds.left;
-
-        if (100 / width * moveMouseX < 30) {
+      <div className='downvoteArea' onClick={() => {
+        if (!showVotes)
           downvoteGif()
-        }
-
-
-        if (100 / width * moveMouseX > 70) {
+      }}></div>
+      {shownArea}
+      <div className='upvoteArea' onClick={() => {
+        if (!showVotes)
           upvoteGif()
-        }
-      }} width="1000vh" height="1000vh" />
+      }}></div>
     </div>
   );
 }

@@ -1,7 +1,3 @@
-.App {
-  text-align: center;
-}
-
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -35,4 +31,75 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.App {
+  display: inline-flex;
+}
+
+.gifImg {
+  width: 50vh;
+  height: 50vh;
+}
+
+.infoBox {
+  width: 50vh;
+  height: 20vh;
+}
+
+.downvoteArea {
+  background-color: red;
+  width: 10vh;
+  height: 50vh;
+  border: 1px solid;
+  border-color: #073b4c;
+}
+
+.upvoteArea {
+  background-color: green;
+  width: 10vh;
+  height: 50vh;
+  border: 1px solid;
+  border-color: #073b4c;
+}
+
+.voteBox{
+  display: flex;
+  justify-content: space-evenly;
+  font-size: 5vh;
+}
+
+.upvoteCount {
+  margin: auto;
+  color: green
+}
+
+.downvoteCount {
+  margin: auto;
+  color: red
+}
+
+.ratioBox {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.ratioBar {
+  display: flex;
+  padding-top: 8%;
+  margin: auto;
+  justify-content: space-evenly;
+  height: 10%;
+  width: 80%;
+}
+
+
+.upvoteRatio {
+  margin: auto;
+  color: green
+}
+
+.downvoteRatio {
+  margin: auto;
+  color: red
 }
