@@ -42,14 +42,14 @@ const useApp = () => {
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
-        fetch("http://localhost:8080/gifs")
+        fetch("http://localhost:8080/api/gifs")
             .then(res => res.json())
             .then(result => {
                 localGifs = shuffle(result)
 
                 setGif(localGifs[currentGifIndex])
 
-                fetch("http://localhost:8080/gifs/" + localGifs[currentGifIndex].id + "/information")
+                fetch("http://localhost:8080/api/gifs/" + localGifs[currentGifIndex].id + "/information")
                     .then(res => res.json())
                     .then(result => setGifInformation(result))
             })
@@ -57,7 +57,7 @@ const useApp = () => {
 
     const upvoteGif = () => {
         console.log("upvote")
-        fetch("http://localhost:8080/gifs/" + localGifs[currentGifIndex].id + "/upvote", { method: "POST" })
+        fetch("http://localhost:8080/api/gifs/" + localGifs[currentGifIndex].id + "/upvote", { method: "POST" })
             .then(res => res.json())
             .then(result => {
                 localGifs[currentGifIndex] = result
@@ -67,7 +67,7 @@ const useApp = () => {
     }
 
     const downvoteGif = () => {
-        fetch("http://localhost:8080/gifs/" + localGifs[currentGifIndex].id + "/downvote", { method: "POST" })
+        fetch("http://localhost:8080/api/gifs/" + localGifs[currentGifIndex].id + "/downvote", { method: "POST" })
             .then(res => res.json())
             .then(result => {
                 localGifs[currentGifIndex] = result
@@ -90,7 +90,7 @@ const useApp = () => {
         setShowVotes(true)
         setInterval(myInterval)
 
-        fetch("http://localhost:8080/calculator/calculate",
+        fetch("http://localhost:8080/api/calculator/calculate",
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -108,7 +108,7 @@ const useApp = () => {
 
     const requestDetails = () => {
         setLoading(true)
-        fetch("http://localhost:8080/gifs/" + localGifs[currentGifIndex].id + "/details")
+        fetch("http://localhost:8080/api/gifs/" + localGifs[currentGifIndex].id + "/details")
             .then(res => res.json())
             .then(result => {
                 setLoading(false)
@@ -117,7 +117,7 @@ const useApp = () => {
     }
 
     const postNewGif = () => {
-        fetch("http://localhost:8080/gifs",
+        fetch("http://localhost:8080/api/gifs",
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -135,7 +135,7 @@ const useApp = () => {
             .then(res => res.json())
             .then(result => {
                 if (result.id !== undefined) {
-                    fetch("http://localhost:8080/gifs")
+                    fetch("http://localhost:8080/api/gifs")
                         .then(res => res.json())
                         .then(result => {
                             localGifs = shuffle(result)
@@ -149,7 +149,7 @@ const useApp = () => {
                             document.getElementById("descriptionText").value = ""
                             document.getElementById("topicText").value = ""
 
-                            fetch("http://localhost:8080/gifs/" + localGifs[currentGifIndex].id + "/information")
+                            fetch("http://localhost:8080/api/gifs/" + localGifs[currentGifIndex].id + "/information")
                                 .then(res => res.json())
                                 .then(result => setGifInformation(result))
                         })
@@ -169,7 +169,7 @@ const useApp = () => {
         setGifDetails(null)
         setShowVotes(false)
 
-        fetch("http://localhost:8080/gifs/" + localGifs[currentGifIndex].id + "/information")
+        fetch("http://localhost:8080/api/gifs/" + localGifs[currentGifIndex].id + "/information")
             .then(res => res.json())
             .then(result => setGifInformation(result))
     }
