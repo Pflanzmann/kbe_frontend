@@ -32,13 +32,7 @@ const useApp = () => {
         descripton: "",
         topic: "",
     })
-    const [gifDetails, setGifDetails] = useState({
-        fileSize: 0,
-        imageWidth: 0,
-        imageHeight: 0,
-        frameCount: 0,
-        duration: 0,
-    })
+    const [gifDetails, setGifDetails] = useState(null)
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
@@ -158,7 +152,6 @@ const useApp = () => {
     }
 
     const nextGif = () => {
-        console.log("nextGif")
         clearInterval(myInterval)
         updateGifs();
     }
