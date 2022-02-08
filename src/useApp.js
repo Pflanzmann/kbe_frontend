@@ -34,6 +34,7 @@ const useApp = () => {
     })
     const [gifDetails, setGifDetails] = useState(null)
     const [loading, setLoading] = useState(false)
+    const [isDebug, setIsDebug] = useState(false)
 
     useEffect(() => {
         fetch("http://localhost:8080/api/gifs")
@@ -47,6 +48,10 @@ const useApp = () => {
                     .then(res => res.json())
                     .then(result => setGifInformation(result))
             })
+
+        fetch("http://localhost:8080/api/gifs/debug")
+            .then(res => res.json())
+            .then(result => setIsDebug(result))
     }, [])
 
     const upvoteGif = () => {
@@ -185,6 +190,7 @@ const useApp = () => {
         loading,
         postNewGif,
         exportData,
+        isDebug,
     }
 };
 

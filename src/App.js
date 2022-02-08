@@ -17,6 +17,7 @@ function App() {
     loading,
     postNewGif,
     exportData,
+    isDebug,
   } = useApp()
 
   const StyledLinearProgress = withStyles({
@@ -45,6 +46,10 @@ function App() {
       boxShadow: 'none',
     },
   });
+
+  var debugView;
+  if (isDebug)
+    debugView = <h3>DEBUG</h3>
 
   var details;
   if (gifDetails != null) {
@@ -110,6 +115,7 @@ function App() {
         }}></UpvoteButton>
       </div>
       <div className='newGifArea'>
+        {debugView}
         <TextField className='textBox' id="urlText" label="URL" variant="outlined" />
         <TextField className='textBox' id="titleText" label="Title" variant="filled" />
         <TextField className='textBox' id="authorText" label="Author" variant="outlined" />
