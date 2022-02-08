@@ -151,6 +151,11 @@ const useApp = () => {
             })
     }
 
+    const exportData = () => {
+        fetch("http://localhost:8080/api/gifs/export")
+            .then(res => { console.log("finished export") })
+    }
+
     const nextGif = () => {
         clearInterval(myInterval)
         updateGifs();
@@ -179,6 +184,7 @@ const useApp = () => {
         nextGif,
         loading,
         postNewGif,
+        exportData,
     }
 };
 

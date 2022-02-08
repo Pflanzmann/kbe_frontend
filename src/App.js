@@ -16,6 +16,7 @@ function App() {
     nextGif,
     loading,
     postNewGif,
+    exportData,
   } = useApp()
 
   const StyledLinearProgress = withStyles({
@@ -115,7 +116,11 @@ function App() {
         <TextField className='textBox' id="descriptionText" label="Description" variant="filled" />
         <TextField className='textBox' id="topicText" label="Topic" variant="outlined" />
         <Button variant="contained" onClick={postNewGif}>Post new gif</Button>
+        <Button variant="contained" onClick={exportData} style={{
+          marginTop: "30px"
+        }}>Export Data</Button>
       </div>
+
     </div>
   );
 }
