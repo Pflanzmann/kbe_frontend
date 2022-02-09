@@ -19,6 +19,7 @@ function App() {
     exportData,
     isExporting,
     isDebug,
+    deleteGif,
   } = useApp()
 
   const StyledLinearProgress = withStyles({
@@ -60,8 +61,13 @@ function App() {
   }
 
   var debugView;
-  if (isDebug)
+  var deleteButton;
+  if (isDebug){
     debugView = <h3>DEBUG</h3>
+    deleteButton = <Button variant="contained" onClick={deleteGif} style={{
+      marginTop: "30px"
+    }}>Delete gif</Button>
+  }
 
   var details;
   if (gifDetails != null) {
@@ -135,6 +141,7 @@ function App() {
         <TextField className='textBox' id="topicText" label="Topic" variant="outlined" />
         <Button variant="contained" onClick={postNewGif}>Post new gif</Button>
         {exportingView}
+        {deleteButton}
       </div>
 
     </div>

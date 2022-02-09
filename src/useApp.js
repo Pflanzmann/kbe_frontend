@@ -182,6 +182,12 @@ const useApp = () => {
             .then(result => setGifInformation(result))
     }
 
+    const deleteGif = () => {
+        fetch("http://localhost:8080/api/gifs/debug/" + localGifs[currentGifIndex].id,
+            { method: "DELETE", })
+            .then(res => nextGif())
+    }
+
     return {
         gif,
         upvoteGif,
@@ -197,6 +203,7 @@ const useApp = () => {
         exportData,
         isExporting,
         isDebug,
+        deleteGif,
     }
 };
 
