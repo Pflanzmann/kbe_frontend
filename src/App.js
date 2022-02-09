@@ -17,6 +17,7 @@ function App() {
     loading,
     postNewGif,
     exportData,
+    isExporting,
     isDebug,
   } = useApp()
 
@@ -46,6 +47,17 @@ function App() {
       boxShadow: 'none',
     },
   });
+
+  var exportingView;
+  if (isExporting) {
+    exportingView = <Button variant="contained" onClick={exportData} style={{
+      marginTop: "30px"
+    }}>Is exporting <CircularProgress style={{ margin: "auto" }} /></Button>
+  } else {
+    exportingView = <Button variant="contained" onClick={exportData} style={{
+      marginTop: "30px"
+    }}>Export Data</Button>
+  }
 
   var debugView;
   if (isDebug)
@@ -122,9 +134,7 @@ function App() {
         <TextField className='textBox' id="descriptionText" label="Description" variant="filled" />
         <TextField className='textBox' id="topicText" label="Topic" variant="outlined" />
         <Button variant="contained" onClick={postNewGif}>Post new gif</Button>
-        <Button variant="contained" onClick={exportData} style={{
-          marginTop: "30px"
-        }}>Export Data</Button>
+        {exportingView}
       </div>
 
     </div>

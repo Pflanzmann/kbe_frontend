@@ -35,6 +35,7 @@ const useApp = () => {
     const [gifDetails, setGifDetails] = useState(null)
     const [loading, setLoading] = useState(false)
     const [isDebug, setIsDebug] = useState(false)
+    const [isExporting, setIsExporting] = useState(false)
 
     useEffect(() => {
         fetch("http://localhost:8080/api/gifs")
@@ -157,8 +158,12 @@ const useApp = () => {
     }
 
     const exportData = () => {
+        setIsExporting(true)
         fetch("http://localhost:8080/api/gifs/export")
-            .then(res => { console.log("finished export") })
+            .then(res => {
+                setIsExporting(false)
+                console.log("finished export")
+            })
     }
 
     const nextGif = () => {
@@ -190,6 +195,7 @@ const useApp = () => {
         loading,
         postNewGif,
         exportData,
+        isExporting,
         isDebug,
     }
 };
